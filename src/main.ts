@@ -11,7 +11,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter())
   // 成功封住 全局的响应拦截器
   app.useGlobalInterceptors(new TransformInterceptor())
-  // 创建路由前缀
+  // 创建路由前缀 全局的路由前缀
   app.setGlobalPrefix('nest/v1');
   // swagger 接口文档
   const config = new DocumentBuilder()

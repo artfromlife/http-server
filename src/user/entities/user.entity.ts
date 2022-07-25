@@ -1,11 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { CustomBaseEntity } from '../../base/custom-base.entity';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class User extends CustomBaseEntity {
 
-  @Column()
+  @Column({
+    length: 100
+  })
   firstName: string;
 
   @Column()

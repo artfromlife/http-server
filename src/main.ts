@@ -12,7 +12,7 @@ async function bootstrap() {
   // 成功封住 全局的响应拦截器
   app.useGlobalInterceptors(new TransformInterceptor())
   // 创建路由前缀 全局的路由前缀
-  app.setGlobalPrefix('nest/v1');
+  app.setGlobalPrefix('nest/');
   // swagger 接口文档
   const config = new DocumentBuilder()
     .setTitle('NEST接口文档')
@@ -20,8 +20,10 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
-  // 开启dto数据验证 全局管道数据验证
-  app.useGlobalPipes(new ValidationPipe());
+  // 开启dto数据验证 全局管道数据验证, whiteList filter fields not in dto
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true
+  }));
   await app.listen(3000);
 }
 bootstrap().then().catch(console.log);

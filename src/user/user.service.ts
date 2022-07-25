@@ -17,11 +17,12 @@ export class UserService {
     return this.usersRepository.save(user)
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    const [records,total] = await this.usersRepository.findAndCount()
+    return { records, total }
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const user = await this.usersRepository.findOne({
       where: {
         id
@@ -32,11 +33,12 @@ export class UserService {
     }else return user
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(updateUserDto: UpdateUserDto) {
+    return this.usersRepository.update(updateUserDto.id, updateUserDto)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const user = await this.findOne(id)
+    return this.usersRepository.softRemove(user)
   }
 }

@@ -6,9 +6,8 @@ import { ApiProperty } from '@nestjs/swagger';
 export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsUUID()
-  @IsNotEmpty()
-  @ApiProperty( {
-    description: 'user id'
-  })
+  @IsNotEmpty({ message: '用户ID不能为空' })
+  @ApiProperty( { description: '用户ID' })
   id: string
+
 }

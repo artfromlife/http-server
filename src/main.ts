@@ -4,9 +4,10 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter} from './filters/http-exception.filter';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
-
+import { loggerMiddleware } from './middleware/logger.middleware';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, );
   // 错误封装 全局异常过滤
   app.useGlobalFilters(new HttpExceptionFilter())
   // 成功封住 全局的响应拦截器
@@ -24,6 +25,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true
   }));
+  // 使用全局中间件
+  app.use(loggerMiddleware)
+  // replace nest logger
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   await app.listen(3000);
 }
 bootstrap().then().catch(console.log);

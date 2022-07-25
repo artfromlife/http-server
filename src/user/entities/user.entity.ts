@@ -1,17 +1,17 @@
 import { Entity, Column } from 'typeorm';
-import { CustomBaseEntity } from '../../base/custom-base.entity';
+import { CustomBaseEntity } from '../../common/custom-base.entity';
 
 @Entity()
 export class User extends CustomBaseEntity {
 
-  @Column({
-    length: 100
-  })
-  firstName: string;
+  @Column()
+  userName: string;
 
   @Column()
-  lastName: string;
+  realName: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column({
+    type: 'uuid'
+  })
+  creator: string;
 }

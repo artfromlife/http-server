@@ -8,7 +8,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     // const status = exception.getStatus();
-
+    global.logger.error(exception.stack)
     response
       .status(200) // 接口只要访问成功就是 200
       .json({

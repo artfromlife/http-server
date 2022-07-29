@@ -29,7 +29,6 @@ export class UserController {
   @ApiOperation({ summary: '查询用户信息' })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    this.logger.error({id, ccc: 'ddd'},UserController)
     return this.userService.findOne(id);
   }
 

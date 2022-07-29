@@ -6,6 +6,7 @@ import { HttpExceptionFilter} from './filters/http-exception.filter';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { loggerMiddleware } from './middleware/logger.middleware';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import './global/logger'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, );
   // 错误封装 全局异常过滤
@@ -32,3 +33,15 @@ async function bootstrap() {
   await app.listen(3000);
 }
 bootstrap().then().catch(console.log);
+class T {
+  readonly say: string = "Hello"
+
+  constructor();
+  constructor(say:string)
+  constructor(say?:string) {
+    this.say = say
+  }
+}
+
+console.log(new T("Word").say);
+new T()

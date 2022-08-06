@@ -50,4 +50,10 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }
+
+  @ApiOperation({ summary: '密码加盐哈希'})
+  @Get('encrypt/:password')
+  encrypt(@Param('password') password:string) {
+    return this.userService.cryptPassword(password)
+  }
 }

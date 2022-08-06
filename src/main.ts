@@ -7,6 +7,7 @@ import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { loggerMiddleware } from './middleware/logger.middleware';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { AuthGuard } from './guards/auth.guard';
+import './global/logger'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, );
   app.useGlobalGuards(new AuthGuard())

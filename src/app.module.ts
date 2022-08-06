@@ -8,6 +8,7 @@ import { WinstonModule, utilities as nestWinstonModuleUtilities } from 'nest-win
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
 import * as path from 'path';
+import { TokenService } from './token/token.service';
 const logDirectory = path.join(__dirname, '../logs');
 
 @Module({
@@ -27,20 +28,13 @@ const logDirectory = path.join(__dirname, '../logs');
     WinstonModule.forRoot({
       // options (same as WinstonModule.forRoot() options)
       format: winston.format.combine(
-        winston.format.timestamp({format: "YYYY-MM-DD HH:mm:ss.SSS"}),
-        winston.format.errors({stack:true}),
-        winston.format.splat(),
-        winston.format.printf(({ level, message, timestamp , ...metadata}) => {
-          let msg = `${timestamp} | ${level} | ${message} `
-          if(metadata) {
-            msg += JSON.stringify(metadata)
-          }
-          return msg
-        }),
+        winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss.SSS" }),
+        winston.format.errors({ stack: true }),
+        winston.format.printf(({ level, message, timestamp }) => `${timestamp} | ${level} |  | ${message} `),
       ),
       transports: [
         new winston.transports.Console({
-          format: nestWinstonModuleUtilities.format.nestLike(),
+          format: nestWinstonModuleUtilities.format.nestLike()
         }),
         new winston.transports.DailyRotateFile({
           level: 'info',
@@ -64,7 +58,7 @@ const logDirectory = path.join(__dirname, '../logs');
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService , TokenService],
 })
 export class AppModule {
 }

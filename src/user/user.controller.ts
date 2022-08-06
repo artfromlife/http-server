@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { UserLoginDto } from './dto/user-login.dto';
 
 @ApiTags("用户模块")
 @Controller('user')
@@ -13,6 +14,12 @@ export class UserController {
     @Inject(WINSTON_MODULE_NEST_PROVIDER)
     private readonly logger: LoggerService,
   ) {}
+
+  @ApiOperation({ summary: '用户登录' })
+  @Post("login")
+  login(@Body() userLoginDto: UserLoginDto) {
+    return this.userService.login(userLoginDto);
+  }
 
   @ApiOperation({ summary: '新建用户' })
   @Post()
@@ -29,7 +36,6 @@ export class UserController {
   @ApiOperation({ summary: '查询用户信息' })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    this.logger.error({id, ccc: 'ddd'},UserController)
     return this.userService.findOne(id);
   }
 

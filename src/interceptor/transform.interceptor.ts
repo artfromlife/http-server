@@ -20,8 +20,8 @@ export class TransformInterceptor<T>
       map(data => {
         return {
           data,
-          code: 20000,
-          message: '成功',
+          code: 200,
+          message: "成功",
         };
       }),
     );

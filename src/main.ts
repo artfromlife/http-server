@@ -6,8 +6,10 @@ import { HttpExceptionFilter} from './filters/http-exception.filter';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { loggerMiddleware } from './middleware/logger.middleware';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { AuthGuard } from './guards/auth.guard';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, );
+  app.useGlobalGuards(new AuthGuard())
   // 错误封装 全局异常过滤
   app.useGlobalFilters(new HttpExceptionFilter())
   // 成功封住 全局的响应拦截器
@@ -23,7 +25,8 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);
   // 开启dto数据验证 全局管道数据验证, whiteList filter fields not in dto
   app.useGlobalPipes(new ValidationPipe({
-    whitelist: true
+    whitelist: true,
+    stopAtFirstError: true // 参数校验第一个出错, 就直接返回
   }));
   // 使用全局中间件
   app.use(loggerMiddleware)
@@ -31,4 +34,6 @@ async function bootstrap() {
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   await app.listen(3000);
 }
-bootstrap().then().catch(console.log);
+bootstrap().then(() => {
+  console.log(`Swagger is running at http://localhost:3000/swagger`)
+}).catch(console.log);

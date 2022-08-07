@@ -5,6 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { UserLoginDto } from './dto/user-login.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @ApiTags("用户模块")
 @Controller('user')
@@ -15,10 +16,18 @@ export class UserController {
     private readonly logger: LoggerService,
   ) {}
 
+
+
   @ApiOperation({ summary: '用户登录' })
   @Post("login")
   login(@Body() userLoginDto: UserLoginDto) {
     return this.userService.login(userLoginDto);
+  }
+
+  @ApiOperation({ summary: 'token刷新' })
+  @Post("tokenRefresh")
+  refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
+    return this.userService.refreshToken(refreshTokenDto);
   }
 
   @ApiOperation({ summary: '新建用户' })

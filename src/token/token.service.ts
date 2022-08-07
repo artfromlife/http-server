@@ -37,7 +37,7 @@ export class TokenService {
     return jwt.sign(payload, REFRESH_TOKEN.SECRET, { expiresIn: REFRESH_TOKEN.EXPIRES_IN });
   }
 
-  validateAccessToken(accessToken: string) {
+  validateAccessToken(accessToken: string):Payload|false {
     let payload
     try{
       payload = jwt.verify(accessToken, ACCESS_TOKEN.SECRET);
@@ -46,12 +46,13 @@ export class TokenService {
     }
     return payload
   }
-  validateRefreshToken(refreshToken: string) {
+  validateRefreshToken(refreshToken: string):Payload|false {
+    let payload
     try{
-      const payload = jwt.verify(refreshToken, REFRESH_TOKEN.SECRET);
-      return payload
+      payload = jwt.verify(refreshToken, REFRESH_TOKEN.SECRET);
     }catch (e) {
-      return false
+      payload = false
     }
+    return payload
   }
 }

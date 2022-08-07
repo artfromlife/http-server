@@ -7,7 +7,8 @@ import { Repository } from 'typeorm';
 import { UserLoginDto } from './dto/user-login.dto';
 import { v4 as uuid } from 'uuid';
 import  crypto = require("crypto");
-import { TokenService } from '../token/token.service'; // 模块导入机制
+import { TokenService } from '../token/token.service';
+import { RefreshTokenDto } from './dto/refresh-token.dto'; // 模块导入机制
 @Injectable()
 export class UserService {
   constructor(
@@ -41,6 +42,20 @@ export class UserService {
       isAdmin: user.id === user.creator
     }
     return this.tokenService.genTokens(payload)
+  }
+
+  refreshToken(refreshTokenDto: RefreshTokenDto) {
+    const payload = this.tokenService.validateRefreshToken(refreshTokenDto.refreshToken)
+
+    if(payload){
+      return this.tokenService.genTokens({
+        userName: payload.userName,
+        userId: payload.userId,
+        isAdmin: payload.isAdmin
+      })
+    }else {
+      throw new HttpException("refreshToken无效",401)
+    }
   }
 
   create(createUserDto: CreateUserDto) {

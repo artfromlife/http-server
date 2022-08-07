@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Request } from 'express';
 import { TokenService } from '../token/token.service';
-const whiteList = ['/nest/user/login']
+const whiteList = ['/nest/user/login', '/nest/user/tokenRefresh']
 const tokenService = new TokenService()
 @Injectable()
 export class AuthGuard implements CanActivate {
